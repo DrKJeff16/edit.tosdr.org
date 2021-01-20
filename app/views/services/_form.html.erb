@@ -2,17 +2,17 @@
   <div class="row row-form">
     <%= simple_form_for [@service] do |f| %>
       <div class="form-inputs col-xs-12">
-        <%= f.input :name, placeholder: "Service name" %>
-        <%= f.input :url, placeholder: "bbc.com,bbc.co.uk", label: "Domains, comma-separated (e.g. 'bbc.com,bbc.co.uk')"%>
-        <%= f.input :wikipedia, placeholder: "Wikipedia link", hint: "This will be used to referrenced the Wikipedia link of the service. Used mostly for the API." %>
+        <%= f.input :name, placeholder: "Service Name", label: "Name of the Service (e.g. 'Facebook', 'Google Maps'...)" %>
+        <%= f.input :url, placeholder: "bbc.com,bbc.co.uk", label: "Domains, comma-separated (e.g. 'bbc.com,bbc.co.uk')" %>
+        <%= f.input :wikipedia, placeholder: "Wikipedia Article URL", hint: "This will be used to referrenced the Wikipedia link of the service. Used mostly for the API." %>
         <%- # Only allow marking services as completely reviewed if they are not new, because new services have no reviews yet: %>
         <% if @service.id && current_user.curator? %>
-          <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <a href=\"https://github.com/tosdr/tosdr.org/wiki/checklist\" target=\"_blank\" title=\"Checklist for service reviews\">comprehensive</a> and ready for publication.".html_safe %>
+          <%= f.input :is_comprehensively_reviewed, label: "This service's ToS;DR review is <i><a href=\"https://forum.tosdr.org/t/rough-draft-checklist/191\" target=\"_blank\" title=\"Checklist for service reviews.\">comprehensive</a></i> and ready for publication.".html_safe %>
         <% end %>
       </div>
       <%= invisible_captcha :description %>
       <div class="form-actions col-xs-4 col-sm-2 col-md-2">
-          <%= link_to "Back", :back, class: "btn btn-default" %>
+          <%= link_to "Back", :back, class: "btn btn-default", title: "Go Back" %>
       </div>
       <div class="form-actions col-xs-8 col-sm-4 col-sm-offset-6 col-md-3 col-md-offset-7">
         <%= f.submit class: 'btn btn-primary' %>
