@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <title>Review <%= @service.name %> (ToS;DR Phoenix)</title>
+  <title>Review <%= @service.name %> | ToS;DR Phoenix</title>
 <% end %>
 
 <form method="POST" id="quoteForm">
@@ -11,11 +11,11 @@
   <input type="hidden" name="quoteCaseId" id="quoteCaseId">
 </form>
 
-<h2><%= link_to  @service.name, service_path(@service) %></h2>
+<h2><%= link_to  @service.name, service_path(@service), title:"Go to Service." %></h2>
 
 <% if @topics %>
 <div class="lead">
-  Highlight lines that are of interest to users to link them to a case.
+  Highlight the lines that are of interest to users to link them to a case.
 </div>
 <div id="caseToast" class="toast">
   <form id="caseDropdown">
@@ -33,14 +33,14 @@
 </div>
 <% else %>
 <div class="lead">
-  Highlight the lines that support the point <i><%= @point.title %></i>.
+  Highlight the line(s) that support the point: <ins><i><%= @point.title %></i></ins>.
 </div>
 <div id="pointToast" class="toast">
   <form id="pointForm">
     <div class="form-group">
       <%= @point.title %>
     </div>
-    <button type="submit" class="btn btn-primary">Link to this excerpt</button>
+    <button type="submit" class="btn btn-primary">Link to This Excerpt</button>
   </form>
 </div>
 <% end %>
@@ -65,7 +65,7 @@
       <div class="panel panel-default">
         <div
           class="panel-heading"
-        ><h3 class="h5"><%= link_to doc.name, document_path(doc) %></h3>
+        ><h3 class="h5"><%= link_to doc.name, document_path(doc), title: "Go to document." %></h3>
         </div>
         <div class="panel-body documentContent" data-content="<%= doc.text %>">
           <% offset = 0 %>
@@ -82,4 +82,4 @@
     </div>
   <% end %>
 </div>
-<%= link_to("Add a point not linked to a document", new_service_point_path(@service), class: 'btn btn-primary') %>
+<%= link_to("Add a point not linked to any document", new_service_point_path(@service), class: 'btn btn-primary') %>
