@@ -1,18 +1,18 @@
 <% content_for :title do %>
-  <title>Service <%= @service.name %> (ToS;DR Phoenix)</title>
+  <title><%= @service.name %> | ToS;DR Phoenix</title>
 <% end %>
 
 <div class="card-inline">
   <div class="card-inline-item card-inline-service">
     <div class="row">
-      <div class="col-lg-6">
-        <h1><a href="<% @service.url %>"><%= @service.name %></a></h1>
-        <h5> Rating: <%= @service.rating %></h5>
+      <div class="col-lg-6 col-sm-9">
+        <h1 id="serviceTitle"><a href="<% @service.url %>" title="<% @service.name %> - ToS;DR"><%= @service.name %></a></h1>
+        <h5 class="text-center" id="serviceRating"> Rating: <%= @service.rating %></h5>
       </div>
 
       <div class="col-lg-6 text-right justify-content-end">
         <% if @service.wikipedia && @service.wikipedia.length > 0 %>
-          <h5 class="fw2 fl gray"><%= link_to '<i class="fab fa-wikipedia-w"></i>'.html_safe, @service.wikipedia %>
+          <h5 class="fw2 fl gray"><%= link_to '<i class="fa fa-wikipedia-w"></i> id="wiki-icon"'.html_safe, @service.wikipedia, title: 'Go to this service\'s Wikipedia article.' %>
         <% end %>
       </div>
     </div>
@@ -20,21 +20,20 @@
     <br>
 
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-6 col-sm-9">
           <% if policy(@service).update? %>
-            <%= link_to 'Edit Service', edit_service_path(@service), class: 'btn btn-primary smaller-btn-text' %>
+            <%= link_to 'Edit Service', edit_service_path(@service), class: 'btn btn-primary smaller-btn-text', title: "Edit this Service." %>
           <% end %>
           <% if current_user %>
-            <%= link_to 'Add Comment', new_service_service_comment_path(@service), class: 'btn btn-link smaller-btn-text' %>
+            <%= link_to 'Add a Comment', new_service_service_comment_path(@service), class: 'btn btn-link smaller-btn-text', title: "Comment on this Service." %>
           <% end %>
-
 
         <% if @service.documents.count == 0 %>
-          <% if current_user %>
-            <%= link_to "Add Document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-link smaller-btn-text" %>
+          <% if current_user.curator %>
+            <%= link_to "Add Document(s)", new_document_path(service: @service), title: "Add a new document to crawl.", class: "btn btn-link smaller-btn-text" %>
           <% end %>
         <% else %>
-          <%= link_to "View Documents", annotate_service_path(@service), title: "Create points by browsing this service's documents", class: 'btn btn-link smaller-btn-text' %>
+          <%= link_to "View Documents", annotate_service_path(@service), title: "Create points by browsing this service's documents.", class: 'btn btn-link smaller-btn-text' %>
         <% end %>
       </div>
 
@@ -42,6 +41,9 @@
     <br>
     <% if @points.empty? %>
       <p>There are no points to display at this time!</p>
+      <% if current_user %>
+        <p>Help us by <%= link_to "reviewing this service", annotate_service_path(@service), title: "Review this service!", class: "btn btn-link smaller-btn-text" %>!</p>
+      <% end %>
     <% else %>
       <%= render "service_points", points: @points, service: true %>
     <% end %>
@@ -56,4 +58,4 @@
 <br>
 <br>
 
-  <%= render 'versions', versions: @versions %>
+<%= render 'versions', versions: @versions %>
