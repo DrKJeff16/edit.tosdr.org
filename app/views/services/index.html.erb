@@ -1,5 +1,5 @@
 <% content_for :title do %>
-  <title>Services</title>
+  <title>Services | ToS;DR Phoenix</title>
 <% end %>
 
 <br>
@@ -21,7 +21,9 @@
           <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
           <div class="">
             <% if current_user && current_user.curator %>
-              <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
+              <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary', title: "Add a new Service." %>
+            <% else %>
+                <a class="btn btn-primary" href="https://forum.tosdr.org/request" title="Request a new Service to be added.">Request Service</a>
             <% end %>
           </div>
         </div>
@@ -35,10 +37,10 @@
           <table class="table table-striped">
             <thead>
               <tr>
-                <th scope="col">Name</th>
+                <th scope="col">Name of Service</th>
                 <th scope="col">Rating</th>
-                <th scope="col" class="text-right">View</th>
-                <th scope="col" class="text-right">Documents</th>
+                <th scope="col">View</th>
+                <th scope="col">Documents</th>
                 <th></th>
               </tr>
             </thead>
@@ -47,15 +49,24 @@
                 <td>
                   {{ service.service.name }}
                 </td>
-                <td>{{ service.service.rating }} </td>
+                <td> <!--Guennadi: Not sure whether the JSON will get parsed if hyperlinked.-->
+                  <% unless current_user %>
+                      <a href="https://tosdr.org/classification" title="More about our rating system." target="_blank">
+                  <% end %>
+                   {{ service.service.rating }} 
+                  <% unless current_user %>
+                      </a>
+                  <% end %>
+                </td>
                 
                 <td class="text-right">
                   <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id"> Details </a>
                 </td>
                 <td class="text-right">
-                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> Annotate </a>
+                  <a class='btn btn-primary' v-bind:href="'/services/'+ service.service.id + '/annotate'"> <% if current_user %>Annotate<% else %>Read<% end %> </a>
                 </td>
-                <td></td>
+                <td>
+                </td>
               </tr>
             </tbody>
           </table>
