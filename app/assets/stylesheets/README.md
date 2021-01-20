@@ -1,6 +1,6 @@
-## Setup
+# Setup
 
-Ensure you have the following gems in your Rails `Gemfile`
+Ensure you have the following gems in your Rails `Gemfile`:
 
 ```ruby
 # Gemfile
@@ -14,19 +14,19 @@ gem 'jquery-rails' # Add this line if you use Rails 5.1
 In your terminal, generate SimpleForm Bootstrap config.
 
 ```bash
-bundle install
-rails generate simple_form:install --bootstrap
+$ bundle install
+$ rails generate simple_form:install --bootstrap
 ```
 
-Then replace Rails' stylesheets by Le Wagon's stylesheets:
+Then replace Rails' stylesheets by *Le Wagon*'s stylesheets:
 
-```
-rm -rf app/assets/stylesheets
-curl -L https://github.com/lewagon/stylesheets/archive/master.zip > stylesheets.zip
-unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets
+```bash
+$ rm -rf app/assets/stylesheets
+$ curl -L https://github.com/lewagon/stylesheets/archive/master.zip > stylesheets.zip
+$ unzip stylesheets.zip -d app/assets && rm stylesheets.zip && mv app/assets/rails-stylesheets-master app/assets/stylesheets
 ```
 
-Don't forget the sprockets directives in `assets/javascripts/application.js`
+Don't forget the sprockets directives in `assets/javascripts/application.js`:
 
 ```javascript
 // app/assets/javascripts/application.js
@@ -37,7 +37,7 @@ Don't forget the sprockets directives in `assets/javascripts/application.js`
 //= require_tree .
 ```
 
-And the viewport in the layout
+And the viewport in the layout:
 
 ```html
 <!-- app/views/layouts/application.html.erb -->
@@ -50,9 +50,11 @@ And the viewport in the layout
 </head>
 ```
 
-## Adding new `.scss` files
+## Adding New `.scss` Files
 
-Look at your main `application.scss` file to see how SCSS files are imported. There should **not** be a `*= require_tree .` line in the file.
+Look at your main `application.scss` file to see how SCSS files are imported. There **should not** be a `*= require_tree .` line in the file.
+
+**Example of `application.scss` file**
 
 ```scss
 // app/assets/stylesheets/application.scss
@@ -74,9 +76,9 @@ Look at your main `application.scss` file to see how SCSS files are imported. Th
 @import "pages/index";
 ```
 
-For every folder (**`components`**, **`layouts`**, **`pages`**), there is one `_index.scss` partial which is responsible for importing all the other partials of its folder.
+For every folder inside your `app/assets/` directory (**`components`**, **`layouts`**, **`pages`**, etc.) there is one `_index.scss` partial which is responsible for importing all the other partials of its folder.
 
-**Example 1**: Let's say you add a new `_contact.scss` file in **`pages`** then modify `pages/_index.scss` as:
+**Example 1**: Let's say you add a new `_contact.scss` file in **`pages`**. If so, then modify `pages/_index.scss` as follows:
 
 ```scss
 // pages/_index.scss
@@ -84,18 +86,18 @@ For every folder (**`components`**, **`layouts`**, **`pages`**), there is one `_
 @import "contact";
 ```
 
-**Example 2**: Let's say you add a new `_sidebar.scss` file in **`layouts`** then modify `layouts/_index.scss` as:
+**Example 2**: Let's say you add a new `_sidebar.scss` file in **`layouts`**. If so, then modify `layouts/_index.scss` as follows:
 
 ```scss
 // layouts/_index.scss
 @import "sidebar";
 ```
 
-## Navbar template
+## Navbar Template
 
-Our `layouts/_navbar.scss` code works well with our home-made ERB template which you can find here:
+Our `layouts/_navbar.scss` code works well with our home-made ERB template, which you can find here:
 
-- [version without login](https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon_without_login.html.erb).
-- [version with login](https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon.html.erb).
+- [Version without login](https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon_without_login.html.erb).
+- [Version with login](https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon.html.erb).
 
-Don't forget that `*.html.erb` files go in the `app/views` folder, and `*.scss` files go in the `app/assets/stylesheets` folder. Also, our navbar have a link to the `root_path`, so make sure that you have a `root to: "controller#action"` route in your `config/routes.rb` file.
+Don't forget that `*.html.erb` files go in the `app/views` folder, and `*.scss` files go in the `app/assets/stylesheets` folder. Also, our navbar has a link to the `root_path`, so make sure that you have a `root to: "controller#action"` route in your `config/routes.rb` file.
