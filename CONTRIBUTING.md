@@ -76,18 +76,18 @@ macOS run `sh INSTALL_mac.sh`.
   Auditing installed plugins: OK
   ```
 
-### When it's done
+### Once It's Done
 
-  Install Rails, Postgres, Yarn, etc.
+Install `Rails`, `Postgres`, `Yarn`, *etc*.
 
 	```bash
-  $ sudo apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+  $ sudo apt-get install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
   $ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
   $ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
   $ sudo apt update && sudo apt install yarn
   ```
-
-  Then, in your code directory, run:
+ 
+Then, in your code directory, run:
 
 	```bash
   $ git clone https://github.com/tosdr/edit.tosdr.org.git
@@ -101,11 +101,11 @@ macOS run `sh INSTALL_mac.sh`.
   $ rails s
   ```
 
-  And you're ready to code!
+And you're ready to code!
 
 ## Testing your pull requests with a copy of the live data
 
-  This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local Phoenix repository:
+This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local Phoenix repository:
 
   ```bash
   $ bash ./db/download.sh
@@ -114,9 +114,9 @@ macOS run `sh INSTALL_mac.sh`.
 
 ## Automated environment setup
 
-  If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
+If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
 
-  To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
+To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
 
 	```bash
   $ docker-compose build
