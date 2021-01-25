@@ -29,8 +29,13 @@
           <% end %>
 
         <% if @service.documents.count == 0 %>
+<<<<<<< HEAD
           <% if current_user.curator %>
             <%= link_to "Add Document(s)", new_document_path(service: @service), title: "Add a new document to crawl.", class: "btn btn-link smaller-btn-text" %>
+=======
+          <% if policy(@document).create? %>
+            <%= link_to "Add Document", new_document_path(service: @service), title: "Add a new document to crawl", class: "btn btn-link smaller-btn-text" %>
+>>>>>>> 0264c1a277209d2f7c935a52f70269d907649779
           <% end %>
         <% else %>
           <%= link_to "View Documents", annotate_service_path(@service), title: "Create points by browsing this service's documents.", class: 'btn btn-link smaller-btn-text' %>

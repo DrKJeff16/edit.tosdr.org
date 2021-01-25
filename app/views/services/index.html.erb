@@ -20,10 +20,15 @@
         <div class="col-lg-6 text-right justify-content-end">
           <button class="btn btn-success" v-on:click="sortServices">Order Services by Rating</button>
           <div class="">
+<<<<<<< HEAD
             <% if current_user && current_user.curator %>
               <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary', title: "Add a new Service." %>
             <% else %>
                 <a class="btn btn-primary" href="https://forum.tosdr.org/request" title="Request a new Service to be added.">Request Service</a>
+=======
+            <% if (!current_user.nil? && current_user.curator?) || (!current_user.nil? && current_user.admin?) %>
+              <%= link_to 'Add Service', new_service_path, class: 'btn btn-primary' %>
+>>>>>>> 0264c1a277209d2f7c935a52f70269d907649779
             <% end %>
           </div>
         </div>
