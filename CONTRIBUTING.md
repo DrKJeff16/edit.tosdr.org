@@ -27,23 +27,23 @@ a systemwide install.
 
 1. Clone rbenv into `~/.rbenv`.
 
-    ~~~ sh
+    ```bash
     $ git clone https://github.com/rbenv/rbenv.git ~/.rbenv
-    ~~~
+    ```
 
     Optionally, try to compile dynamic bash extension to speed up rbenv. Don't
     worry if it fails; rbenv will still work normally:
 
-    ~~~
+    ```bash
     $ cd ~/.rbenv && src/configure && make -C src
-    ~~~
+    ```
 
 2. Add `~/.rbenv/bin` to your `$PATH` for access to the `rbenv`
    command-line utility.
 
-    ~~~ sh
+    ```bash
     $ echo 'export PATH="$HOME/.rbenv/bin:$PATH"' >> ~/.bash_profile
-    ~~~
+    ```
 
     **Ubuntu Desktop note**: Modify your `~/.bashrc` instead of `~/.bash_profile`.
 
@@ -54,18 +54,18 @@ a systemwide install.
    running `ruby` "see" the Ruby version that you choose with rbenv.
 
 4. Restart your shell so that PATH changes take effect. (Opening a new
-   terminal tab will usually do it.)
+   terminal tab will usually do it, but you can also do `source ~/.bashrc`.)
 
 5. Install [ruby-build][], which provides the `rbenv install` command.
-   ~~~ sh
+   ```bash
    mkdir -p "$(rbenv root)"/plugins
    git clone https://github.com/rbenv/ruby-build.git "$(rbenv root)"/plugins/ruby-build
-   ~~~
+   ```
 
 6. Verify that rbenv is properly set up using this
    [rbenv-doctor](https://github.com/rbenv/rbenv-installer/blob/master/bin/rbenv-doctor) script:
 
-    ~~~ sh
+    ```bash
     $ curl -fsSL https://github.com/rbenv/rbenv-installer/raw/master/bin/rbenv-doctor | bash
     Checking for `rbenv' in PATH: /usr/local/bin/rbenv
     Checking for rbenv shims in PATH: OK
@@ -75,38 +75,42 @@ a systemwide install.
       You can install Ruby versions like so: rbenv install 2.2.4
     Checking RubyGems settings: OK
     Auditing installed plugins: OK
-    ~~~
+    ```
 
 ### When it's done
 
-Install Rails, Postgres, Yarn, etc
+Install Rails, Postgres, Yarn, etc.:
 
-    sudo apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-    sudo apt update && sudo apt install yarn
+		```bash
+    $ sudo apt install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+    $ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    $ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    $ sudo apt update && sudo apt install yarn
+    ```
 
-In your code directory run:
+Then, in your code directory, run:
 
-    git clone https://github.com/tosdr/edit.tosdr.org
-    cd edit.tosdr.org
-    rbenv install 2.6.5
-    rbenv local 2.6.5
-    gem install bundler
-    bundle install
-    yarn
-    rails db:create db:migrate db:seed
-    rails s
+		```bash
+    $ git clone https://github.com/tosdr/edit.tosdr.org.git
+    $ cd edit.tosdr.org
+    $ rbenv install 2.7.2
+    $ rbenv local 2.7.2
+    $ gem install bundler
+    $ bundle install
+    $ yarn
+    $ rails db:create db:migrate db:seed
+    $ rails s
+    ```
 
-And you're ready to code !
+And you're ready to code!
 
-## Test your pull requests with a copy of the live data
+## Testing your pull requests with a copy of the live data
 
 This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local phoenix repo:
 
-```sh
-sh ./db/download.sh
-rails s
+```bash
+$ bash ./db/download.sh
+$ rails s
 ```
 
 ## Automated environment setup
@@ -115,28 +119,32 @@ If you have installed [Docker compose](https://docs.docker.com/compose/install/)
 
 To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
 
+		```bash
     $ docker-compose build
     $ docker-compose run web bash -c "sleep 1; rails db:create db:migrate"
+    ```
 
 From then on, you can start the application by running:
 
+		```bash
     $ docker-compose up
+    ```
 
 (Add the `--build` argument if you add or remove dependencies.)
 
 To import a database dump from Heroku:
 
-```sh
-rm latest.dump
-heroku pg:backups:capture --app edit-tosdr-org
-heroku pg:backups:download --app edit-tosdr-org
-docker-compose run db pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development -h db -U postgres --no-password /app/latest.dump
-docker-compose run web rails db:migrate
-```
+		```bash
+		$ rm latest.dump
+		$ heroku pg:backups:capture --app edit-tosdr-org
+		$ heroku pg:backups:download --app edit-tosdr-org
+		$ docker-compose run db pg_restore --verbose --clean --no-acl --no-owner -d phoenix_development -h db -U postgres --no-password /app/latest.dump
+		$ docker-compose run web rails db:migrate
+		```
 
 ## Committing & Pull Requests
 
-* If it's a fix use [fix] as a prefix of your message, if it's an enhancement, use [enh], [mod] if it's a modification, [sec] if it's security.
-* When you create a pull request, please make sure you checked everything in the PR template.
+* If it's a fix use [fix] as a prefix of your message. If it's an enhancement, use [enh]; [mod] if it's a modification; and [sec] if it's security.
+* When you create a pull request, please make sure you've checked everything in the PR template.
 
 Have fun!
