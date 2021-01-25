@@ -78,34 +78,34 @@ macOS run `sh INSTALL_mac.sh`.
 
 ### Once It's Done
 
-Install `Rails`, `Postgres`, `Yarn`, *etc*.
+Make sure you install Rails, Postgres, Yarn, *etc*:
 
-	```bash
-  $ sudo apt-get install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
-  $ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-  $ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-  $ sudo apt update && sudo apt install yarn
-  ```
- 
-Then, in your code directory, run:
+```bash
+$ sudo apt-get install rails postgresql libpq-dev build-essential libssl-dev libreadline-dev zlib1g-dev
+$ curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+$ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+$ sudo apt update && sudo apt install yarn
+```
 
-	```bash
-  $ git clone https://github.com/tosdr/edit.tosdr.org.git
-  $ cd edit.tosdr.org
-  $ rbenv install 2.7.2
-  $ rbenv local 2.7.2
-  $ gem install bundler
-  $ bundle install
-  $ yarn
-  $ rails db:create db:migrate db:seed
-  $ rails s
-  ```
+- Then, in your code directory, run:
 
-And you're ready to code!
+```bash
+$ git clone https://github.com/tosdr/edit.tosdr.org.git
+$ cd edit.tosdr.org
+$ rbenv install 2.7.2
+$ rbenv local 2.7.2
+$ gem install bundler
+$ bundle install
+$ yarn
+$ rails db:create db:migrate db:seed
+$ rails s
+```
+
+- And you're ready to code!
 
 ## Testing your pull requests with a copy of the live data
 
-This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local Phoenix repository:
+  This requires Heroku access, and is not easy to do if you use Docker compose, but if you can, please copy the live data to your local instance (important if you want to test your PRs!), run the following in your local Phoenix repository:
 
   ```bash
   $ bash ./db/download.sh
@@ -114,24 +114,24 @@ This requires Heroku access, and is not easy to do if you use Docker compose, bu
 
 ## Automated environment setup
 
-If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
+  If you have installed [Docker compose](https://docs.docker.com/compose/install/), getting the application running involves two one-time steps, after which it can be started with a single command in the future.
 
-To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
+  1. To prepare the application, run the following two commands inside the repository folder to build it and then initialise the database:
 
 	```bash
   $ docker-compose build
   $ docker-compose run web bash -c "sleep 1; rails db:create db:migrate"
   ```
 
-  From then on, you can start the application by running:
+  2. From then on, you can start the application by running
 
 	```bash
   $ docker-compose up
   ```
 
-(Add the `--build` argument if you add or remove dependencies.)
+  *(Add the `--build` argument if you add or remove dependencies.)*
 
-  To import a database dump from Heroku:
+  3. To import a database dump from Heroku:
 
 	```bash
 	$ rm latest.dump
