@@ -7,6 +7,7 @@ gem 'sendgrid-ruby'
 
 gem 'kramdown'
 
+
 gem 'activeadmin'
 gem 'devise'
 gem 'figaro'
@@ -35,9 +36,8 @@ gem 'invisible_captcha'
 gem 'coffee-rails'
 
 # for tosback2:
-gem 'capybara'
-gem 'poltergeist'
 gem 'sanitize'
+gem 'httparty'
 
 # for api pagination
 gem 'kaminari'

@@ -1,5 +1,6 @@
-require 'capybara/poltergeist'
 require 'sanitize'
+require 'httparty'
+require 'json'
 
 class TOSBackDoc
   @site = nil
@@ -10,10 +11,13 @@ class TOSBackDoc
   @reviewed ||= nil
   @save_dir ||= nil
   @save_path ||= nil
+  @apiresponse ||= nil
+  @server ||= 'eu'
 
   def initialize(hash)
     @site = hash[:site]
     @name = hash[:name]
+    @server = (hash[:server].nil? || hash[:server].empty? || hash[:server] == false || hash[:server] == "false" ) ? "eu" : hash[:server]
     @url = hash[:url]
     @xpath = (hash[:xpath] == "") ? nil : hash[:xpath]
     @reviewed = (hash[:reviewed].nil? || hash[:reviewed].empty? || hash[:reviewed] == false || hash[:reviewed] == "false" ) ? nil : hash[:reviewed]
@@ -79,23 +83,23 @@ class TOSBackDoc
   end #puts_doc
 
   def download_and_filter_with_xpath
-    begin
-      Capybara.register_driver :poltergeist do |app|
-        Capybara::Poltergeist::Driver.new(app, {phantomjs_options: ['--ssl-protocol=any']})
-      end
-
-      session = Capybara::Session.new :poltergeist
-      session.driver.browser.js_errors = false
-      session.driver.headers = {"User-Agent" => "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:54.0) Gecko/20100101 Firefox/54.0"}
-      session.visit @url
-      raise "404 Error" if session.status_code == 404
-      @newdata = @xpath.nil? ? session.find(:xpath, "//body")['innerHTML'] : session.find(:xpath, @xpath)['innerHTML']
-    rescue => e
-      puts "#{url}:\t#{e.message}"
-      @newdata = ""
-    ensure
-      session.driver.quit
-    end
+	begin
+		if not @xpath.blank?
+			response = HTTParty.get('https://crawler.'+@server+'.tosdr.org/?url='+ CGI.escape(@url) +'&xpath='+ CGI.escape(@xpath) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+		else
+			response = HTTParty.get('https://crawler.'+@server+'.tosdr.org/?url='+ CGI.escape(@url) +'&apikey='+ ENV["CRAWLER_API_KEY"])
+		end
+		@apiresponse = JSON.parse(response.body)
+		  
+		if @apiresponse["error"]
+			puts @apiresponse["message"]
+		else
+			@newdata = @apiresponse["raw_html"]
+		end
+	rescue => e
+		@apiresponse = {"error" => true, "message" => { "name" => "Crawler Request Rescue", "message" => e}}
+		puts e
+	end
   end
 
   def format_newdata()
@@ -108,7 +112,7 @@ class TOSBackDoc
   def strip_tags()
     begin
       @newdata = Sanitize.clean(@newdata, :remove_contents => ["script", "style"], :elements => %w[ abbr b blockquote br cite code dd dfn dl dt em i li ol p q s small strike strong sub sup u ul ], :whitespace_elements => []) # strips non-style html tags and removes content between <script> and <style> tags
-      # puts "worked"
+      puts "stripped"
     rescue Encoding::CompatibilityError
       # puts "rescued"
       @newdata.encode!("UTF-8", :undef => :replace)
@@ -121,7 +125,7 @@ class TOSBackDoc
     end
   end #strip_tags
 
-  attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed
+  attr_accessor :name, :url, :xpath, :newdata, :site, :has_prev, :reviewed, :apiresponse
   private :download_and_filter_with_xpath, :strip_tags, :format_newdata, :skip_notify?, :data_changed?
 end #TOSBackDoc
 
